@@ -1,0 +1,569 @@
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans',system-ui,sans-serif}
+.app{max-width:380px;margin:0 auto;padding:10px;font-family:'Noto Sans',system-ui,sans-serif}
+.hero{background:#0a4a2a;border-radius:16px;padding:14px 16px;margin-bottom:10px;border:1.5px solid #b8962e;position:relative;overflow:hidden;text-align:center}
+.hero-border{position:absolute;inset:4px;border-radius:12px;border:0.5px solid rgba(184,150,46,0.3);pointer-events:none}
+.corner{position:absolute;opacity:0.4;pointer-events:none}
+.hero h1{font-size:17px;font-weight:500;color:#e8c84a;letter-spacing:0.02em}
+.hero p{font-size:11px;color:rgba(232,200,74,0.55);margin-top:3px}
+.bismillah{font-size:20px;color:rgba(232,200,74,0.8);margin-bottom:8px;font-family:'Noto Naskh Arabic',serif}
+.nav{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
+.nav-btn{padding:7px 2px;border-radius:9px;border:0.5px solid rgba(184,150,46,0.3);background:#fdf8ee;color:#0a4a2a;font-size:9px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s}
+.nav-btn:hover{background:#f5e9c0}
+.nav-btn.active{background:#0a4a2a;color:#e8c84a;border-color:#b8962e}
+.nav-btn span{font-size:14px}
+.panel{background:#fdf8ee;border:0.5px solid rgba(184,150,46,0.35);border-radius:12px;padding:14px;margin-bottom:10px;position:relative}
+.panel::before{content:'';position:absolute;top:5px;left:5px;right:5px;bottom:5px;border-radius:8px;border:0.5px solid rgba(184,150,46,0.1);pointer-events:none}
+.panel-title{font-size:13px;font-weight:500;color:#0a4a2a;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.divider{flex:1;height:0.5px;background:rgba(184,150,46,0.3)}
+.field-label{font-size:11px;color:#1a6b3a;margin-bottom:4px;display:block;font-weight:500}
+.opt{color:#999;font-size:10px;font-weight:400}
+.inp{width:100%;padding:9px 11px;border:1px solid #b8962e;border-radius:8px;background:#fff;color:#111;font-size:14px;outline:none;margin-bottom:10px;display:block;-webkit-text-fill-color:#111}
+.inp::placeholder{color:#aaa;-webkit-text-fill-color:#aaa}
+.inp:focus{border-color:#0a4a2a;box-shadow:0 0 0 2px rgba(10,74,42,0.12)}
+.btn-primary{width:100%;padding:11px;border:1px solid #b8962e;border-radius:8px;background:#0a4a2a;color:#e8c84a;font-size:14px;font-weight:500;cursor:pointer;-webkit-text-fill-color:#e8c84a}
+.srow{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:0.5px solid rgba(184,150,46,0.15)}
+.srow:last-child{border-bottom:none}
+.av{width:32px;height:32px;border-radius:50%;background:#0a4a2a;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#e8c84a;flex-shrink:0;border:0.5px solid #b8962e;-webkit-text-fill-color:#e8c84a}
+.sname{font-size:13px;font-weight:500;color:#0a4a2a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sphone{font-size:10px;color:#666}
+.btn-rm{padding:4px 9px;border:1px solid #dc2626;border-radius:6px;background:#fff;color:#dc2626;font-size:10px;cursor:pointer;flex-shrink:0;-webkit-text-fill-color:#dc2626}
+.empty{text-align:center;padding:28px 0;color:#aaa;font-size:12px}
+.sinp{width:100%;padding:7px 10px;border:1px solid rgba(184,150,46,0.5);border-radius:8px;background:#fff;color:#111;font-size:12px;margin-bottom:10px;outline:none;display:block;-webkit-text-fill-color:#111}
+.sinp::placeholder{color:#aaa;-webkit-text-fill-color:#aaa}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#0a4a2a;border:0.5px solid #b8962e;border-radius:8px;padding:7px 16px;font-size:12px;color:#e8c84a;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;-webkit-text-fill-color:#e8c84a}
+.toast.show{opacity:1}
+.fc-wrap{text-align:center;padding:4px 0}
+.fc-bar-bg{height:3px;background:rgba(184,150,46,0.15);border-radius:2px;margin-bottom:18px;overflow:hidden}
+.fc-bar{height:3px;background:#b8962e;border-radius:2px;transition:width 0.3s}
+.fc-av{width:72px;height:72px;border-radius:50%;background:#0a4a2a;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:500;color:#e8c84a;margin:0 auto 12px;border:1.5px solid #b8962e;-webkit-text-fill-color:#e8c84a}
+.fc-name{font-size:20px;font-weight:500;color:#0a4a2a;margin-bottom:4px}
+.fc-phone{font-size:11px;color:#666;margin-bottom:22px;min-height:16px}
+.fc-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fc-btn{padding:22px 8px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform 0.1s}
+.fc-btn:active{transform:scale(0.95)}
+.fc-undo{width:100%;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px;border:1px solid rgba(184,150,46,0.4);border-radius:8px;background:#fff;color:#555;font-size:11px;cursor:pointer;-webkit-text-fill-color:#555}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.sum-card{background:#fff;border-radius:8px;padding:10px;border:0.5px solid rgba(184,150,46,0.2)}
+.sum-label{font-size:10px;color:#888;-webkit-text-fill-color:#888}
+.save-btn{width:100%;padding:11px;border:1px solid #b8962e;border-radius:8px;background:#0a4a2a;color:#e8c84a;font-size:14px;font-weight:500;cursor:pointer;-webkit-text-fill-color:#e8c84a}
+.restart-btn{width:100%;padding:8px;border:1px solid rgba(184,150,46,0.3);border-radius:8px;background:#fff;color:#666;font-size:12px;cursor:pointer;margin-top:7px;-webkit-text-fill-color:#666}
+.date-tag{display:inline-block;background:#0a4a2a;color:#e8c84a;font-size:10px;padding:2px 8px;border-radius:20px;border:0.5px solid #b8962e;-webkit-text-fill-color:#e8c84a}
+.month-hdr{font-size:11px;font-weight:500;color:#b8962e;margin:10px 0 5px;letter-spacing:0.07em;text-transform:uppercase;-webkit-text-fill-color:#b8962e}
+.hist-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid rgba(184,150,46,0.1);cursor:pointer;border-radius:6px;transition:background 0.12s}
+.hist-row:hover{background:rgba(184,150,46,0.07)}
+.hist-row:last-child{border-bottom:none}
+.bdg-p{background:rgba(21,128,61,0.12);color:#15803d;font-size:10px;padding:1px 7px;border-radius:20px;-webkit-text-fill-color:#15803d}
+.bdg-a{background:rgba(220,38,38,0.1);color:#b91c1c;font-size:10px;padding:1px 7px;border-radius:20px;-webkit-text-fill-color:#b91c1c}
+.chip{font-size:10px;padding:1px 7px;border-radius:20px}
+.chip.p{background:rgba(21,128,61,0.12);color:#15803d;-webkit-text-fill-color:#15803d}
+.chip.a{background:rgba(220,38,38,0.1);color:#b91c1c;-webkit-text-fill-color:#b91c1c}
+.chip.l{background:rgba(234,179,8,0.12);color:#a16207;-webkit-text-fill-color:#a16207}
+.bdg-l{background:rgba(234,179,8,0.12);color:#a16207;font-size:10px;padding:1px 7px;border-radius:20px;-webkit-text-fill-color:#a16207}
+.phone-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:0.5px solid rgba(184,150,46,0.15)}
+.phone-row:last-child{border-bottom:none}
+.no-phone{font-size:10px;color:#bbb;font-style:italic;-webkit-text-fill-color:#bbb}
+.slide-in{animation:si 0.22s ease}
+@keyframes si{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* edit mode */
+.edit-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.btn-back{padding:5px 10px;border:1px solid rgba(184,150,46,0.4);border-radius:7px;background:#fff;color:#0a4a2a;font-size:11px;cursor:pointer;flex-shrink:0;-webkit-text-fill-color:#0a4a2a}
+.edit-date{font-size:12px;font-weight:500;color:#0a4a2a;flex:1}
+.edit-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:0.5px solid rgba(184,150,46,0.12)}
+.edit-row:last-child{border-bottom:none}
+.toggle-wrap{display:flex;gap:5px;flex-shrink:0}
+.tog{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all 0.12s;-webkit-text-fill-color:#999}
+.tog.p-off{background:#f0f0f0;color:#999;border-color:#ddd}
+.tog.p-on{background:#15803d;color:#fff;border-color:#15803d;-webkit-text-fill-color:#fff}
+.tog.a-off{background:#f0f0f0;color:#999;border-color:#ddd}
+.tog.a-on{background:#dc2626;color:#fff;border-color:#dc2626;-webkit-text-fill-color:#fff}
+.tog.l-off{background:#f0f0f0;color:#999;border-color:#ddd}
+.tog.l-on{background:#ca8a04;color:#fff;border-color:#ca8a04;-webkit-text-fill-color:#fff}
+.save-edit-btn{width:100%;padding:10px;border:1px solid #b8962e;border-radius:8px;background:#0a4a2a;color:#e8c84a;font-size:13px;font-weight:500;cursor:pointer;margin-top:12px;-webkit-text-fill-color:#e8c84a}
+.del-btn{width:100%;padding:9px;border:1px solid #dc2626;border-radius:8px;background:#fff;color:#dc2626;font-size:12px;cursor:pointer;margin-top:7px;-webkit-text-fill-color:#dc2626}
+.edit-hint{font-size:10px;color:#aaa;text-align:center;margin-top:10px}
+
+/* phone edit */
+.phone-edit-inp{flex:1;padding:5px 8px;border:1px solid #b8962e;border-radius:6px;background:#fff;color:#111;font-size:12px;outline:none;-webkit-text-fill-color:#111}
+.phone-edit-inp::placeholder{color:#aaa;-webkit-text-fill-color:#aaa}
+.btn-edit-phone{padding:4px 9px;border:1px solid rgba(184,150,46,0.5);border-radius:6px;background:#fff;color:#0a4a2a;font-size:10px;cursor:pointer;flex-shrink:0;-webkit-text-fill-color:#0a4a2a}
+.btn-save-phone{padding:4px 9px;border:1px solid #15803d;border-radius:6px;background:#15803d;color:#fff;font-size:10px;cursor:pointer;flex-shrink:0;-webkit-text-fill-color:#fff}
+.btn-cancel-phone{padding:4px 9px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#666;font-size:10px;cursor:pointer;flex-shrink:0;-webkit-text-fill-color:#666}
+
+/* advance leave */
+.adv-leave-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid rgba(184,150,46,0.12)}
+.adv-leave-row:last-child{border-bottom:none}
+.adv-chip{font-size:10px;padding:1px 7px;border-radius:20px;background:rgba(234,179,8,0.12);color:#a16207;-webkit-text-fill-color:#a16207}
+.adv-remove{padding:3px 7px;border:1px solid #dc2626;border-radius:5px;background:#fff;color:#dc2626;font-size:10px;cursor:pointer;-webkit-text-fill-color:#dc2626}
+
+/* database view */
+.db-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.db-table{border-collapse:collapse;font-size:10px;min-width:100%}
+.db-table th,.db-table td{padding:5px 7px;border:0.5px solid rgba(184,150,46,0.2);white-space:nowrap;text-align:center}
+.db-table th{background:#0a4a2a;color:#e8c84a;font-weight:500;-webkit-text-fill-color:#e8c84a;position:sticky;top:0}
+.db-table th.name-col{text-align:left;min-width:90px;position:sticky;left:0;z-index:2}
+.db-table td.name-col{text-align:left;background:#fdf8ee;position:sticky;left:0;z-index:1;font-weight:500;color:#0a4a2a;-webkit-text-fill-color:#0a4a2a}
+.db-table tr:nth-child(even) td{background:#f9f4e5}
+.db-table tr:nth-child(even) td.name-col{background:#f9f4e5}
+.cell-p{color:#15803d;font-weight:600;-webkit-text-fill-color:#15803d}
+.cell-a{color:#dc2626;font-weight:600;-webkit-text-fill-color:#dc2626}
+.cell-l{color:#a16207;font-weight:600;-webkit-text-fill-color:#a16207}
+.cell-blank{color:#ccc;-webkit-text-fill-color:#ccc}
+.db-month-hdr{font-size:11px;font-weight:500;color:#b8962e;margin:14px 0 6px;letter-spacing:0.07em;text-transform:uppercase;-webkit-text-fill-color:#b8962e}
+</style>
+
+<h2 style="position:absolute;left:-9999px">Attendance register with editable history, Islamic theme, offline storage.</h2>
+<div class="app" id="root"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var root=document.getElementById('root'),toastEl=document.getElementById('toast');
+function lsGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+var S={
+  view:'add',
+  students:lsGet('att5_students')||[],
+  records:lsGet('att5_records')||[],
+  advLeaves:lsGet('att5_advleaves')||[],
+  session:{},fcIndex:0,fcStarted:false,fcDone:false,
+  removeSearch:'',
+  editingRecordIndex:null,
+  editData:{},
+  editingPhoneId:null
+};
+
+function persist(){lsSet('att5_students',S.students);lsSet('att5_records',S.records);lsSet('att5_advleaves',S.advLeaves)}
+function toast(m){toastEl.textContent=m;toastEl.classList.add('show');setTimeout(function(){toastEl.classList.remove('show')},2000)}
+function ini(n){var p=n.trim().split(' '),r='';for(var i=0;i<p.length&&r.length<2;i++)if(p[i])r+=p[i][0].toUpperCase();return r}
+function fullDate(){return new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+function shortDate(ts){return new Date(ts).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+function monthYear(ts){return new Date(ts).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+var CORNER='<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2L12 2M2 2L2 12" fill="none" stroke="#e8c84a" stroke-width="1"/><circle cx="2" cy="2" r="1.5" fill="#e8c84a"/><path d="M7 2Q2 2 2 7" fill="none" stroke="#e8c84a" stroke-width="0.5" opacity="0.6"/></svg>';
+
+function heroHtml(){
+  var n=S.students.length;
+  return '<div class="hero">'
+    +'<div class="hero-border"></div>'
+    +'<div class="corner" style="top:5px;left:5px">'+CORNER+'</div>'
+    +'<div class="corner" style="top:5px;right:5px;transform:scaleX(-1)">'+CORNER+'</div>'
+    +'<div class="corner" style="bottom:5px;left:5px;transform:scaleY(-1)">'+CORNER+'</div>'
+    +'<div class="corner" style="bottom:5px;right:5px;transform:scale(-1)">'+CORNER+'</div>'
+    +'<div class="bismillah">بِسْمِ اللَّهِ</div>'
+    +'<h1>Attendance Register <span style="font-size:11px;opacity:0.55;font-weight:400">v.1.82</span></h1>'
+    +'<p>'+n+' student'+(n!==1?'s':'')+' enrolled &nbsp;·&nbsp; '+new Date().getFullYear()+'</p>'
+    +'</div>';
+}
+
+function navHtml(){
+  var vs=[{id:'add',icon:'＋',l:'Add'},{id:'remove',icon:'✕',l:'Remove'},{id:'attend',icon:'✓',l:'Attend'},{id:'history',icon:'☰',l:'History'},{id:'phones',icon:'☎',l:'Phones'},{id:'advleave',icon:'📅',l:'Leave'},{id:'database',icon:'▦',l:'Database'}];
+  var h='<div class="nav">';
+  for(var i=0;i<vs.length;i++){var v=vs[i];h+='<button class="nav-btn'+(S.view===v.id?' active':'')+'" onclick="setView(\''+v.id+'\')" ><span>'+v.icon+'</span>'+v.l+'</button>'}
+  return h+'</div>';
+}
+
+function addHtml(){
+  return '<div class="panel">'
+    +'<div class="panel-title">Add new student<div class="divider"></div></div>'
+    +'<label class="field-label">Full name</label>'
+    +'<input class="inp" type="text" id="inp-name" placeholder="e.g. Ahmed Khan" autocomplete="off"/>'
+    +'<label class="field-label">Phone number <span class="opt">(optional)</span></label>'
+    +'<input class="inp" type="tel" id="inp-phone" placeholder="e.g. 0300-1234567" autocomplete="off"/>'
+    +'<button class="btn-primary" onclick="addStudent()">Add student</button>'
+    +'</div>';
+}
+
+function removeHtml(){
+  if(!S.students.length) return '<div class="panel"><div class="empty">No students yet.</div></div>';
+  var q=(S.removeSearch||'').toLowerCase();
+  var f=S.students.filter(function(s){return s.name.toLowerCase().indexOf(q)>=0});
+  var h='<div class="panel"><div class="panel-title">Remove student<div class="divider"></div></div>'
+    +'<input class="sinp" type="text" placeholder="Search…" value="'+escH(S.removeSearch||'')+'" oninput="S.removeSearch=this.value;render()"/>';
+  if(f.length){for(var i=0;i<f.length;i++){var s=f[i];h+='<div class="srow"><div class="av">'+ini(s.name)+'</div><div style="flex:1;min-width:0"><div class="sname">'+escH(s.name)+'</div>'+(s.phone?'<div class="sphone">'+escH(s.phone)+'</div>':'')+'</div><button class="btn-rm" onclick="removeStudent(\''+s.id+'\')">Remove</button></div>'}}
+  else h+='<div class="empty">No results.</div>';
+  return h+'</div>';
+}
+
+function attendHtml(){
+  if(!S.students.length) return '<div class="panel"><div class="empty">Add students first.</div></div>';
+  if(!S.fcStarted){
+    return '<div class="panel" style="text-align:center;padding:20px 14px">'
+      +'<div style="font-size:15px;font-weight:500;color:#0a4a2a;margin-bottom:4px">Take attendance</div>'
+      +'<div style="font-size:12px;color:#666;margin-bottom:6px">'+fullDate()+'</div>'
+      +'<div style="font-size:12px;color:#666;margin-bottom:20px">'+S.students.length+' student'+(S.students.length!==1?'s':'')+' one by one</div>'
+      +'<button class="btn-primary" onclick="startSession()">Begin</button></div>';
+  }
+  if(S.fcDone) return fcDoneHtml();
+  return fcCardHtml();
+}
+
+function fcCardHtml(){
+  var s=S.students[S.fcIndex],tot=S.students.length,pct=Math.round((S.fcIndex/tot)*100);
+  return '<div class="panel slide-in"><div class="fc-wrap">'
+    +'<div style="font-size:11px;color:#666;margin-bottom:5px">'+(S.fcIndex+1)+' of '+tot+'</div>'
+    +'<div class="fc-bar-bg"><div class="fc-bar" style="width:'+pct+'%"></div></div>'
+    +'<div class="fc-av">'+ini(s.name)+'</div>'
+    +'<div class="fc-name">'+escH(s.name)+'</div>'
+    +'<div class="fc-phone">'+escH(s.phone||'')+'</div>'
+    +'<div class="fc-btns" style="grid-template-columns:1fr 1fr 1fr">'
+    +'<button class="fc-btn" onclick="markFC(\'P\')" style="background:#15803d;color:#fff">'
+    +'<span style="color:#fff;font-size:28px;line-height:1;-webkit-text-fill-color:#fff">✓</span>'
+    +'<span style="color:#fff;font-size:15px;font-weight:600;-webkit-text-fill-color:#fff">Present</span>'
+    +'</button>'
+    +'<button class="fc-btn" onclick="markFC(\'A\')" style="background:#dc2626;color:#fff">'
+    +'<span style="color:#fff;font-size:28px;line-height:1;-webkit-text-fill-color:#fff">✗</span>'
+    +'<span style="color:#fff;font-size:15px;font-weight:600;-webkit-text-fill-color:#fff">Absent</span>'
+    +'</button>'
+    +'<button class="fc-btn" onclick="markFC(\'L\')" style="background:#ca8a04;color:#fff">'
+    +'<span style="color:#fff;font-size:28px;line-height:1;-webkit-text-fill-color:#fff">◷</span>'
+    +'<span style="color:#fff;font-size:15px;font-weight:600;-webkit-text-fill-color:#fff">Leave</span>'
+    +'</button></div>'
+    +(S.fcIndex>0?'<button class="fc-undo" onclick="undoFC()">← Undo last</button>':'')
+    +'</div></div>';
+}
+
+function fcDoneHtml(){
+  var P=0,A=0,L=0;
+  var vals=Object.values(S.session);
+  for(var i=0;i<vals.length;i++){if(vals[i]==='P')P++;else if(vals[i]==='A')A++;else if(vals[i]==='L')L++}
+  var chips='';
+  for(var i=0;i<S.students.length;i++){var s=S.students[i],st=S.session[s.id]||'?';chips+='<span class="chip '+(st==='P'?'p':st==='L'?'l':'a')+'">'+escH(s.name.split(' ')[0])+': '+st+'</span> '}
+  return '<div class="panel"><div style="text-align:center">'
+    +'<div style="font-size:13px;font-weight:500;color:#0a4a2a;margin-bottom:6px">Session complete</div>'
+    +'<div style="margin-bottom:10px"><span class="date-tag">'+fullDate()+'</span></div>'
+    +'<div class="sum-grid" style="grid-template-columns:1fr 1fr 1fr"><div class="sum-card"><div class="sum-label">Present</div><div style="font-size:24px;font-weight:500;color:#15803d;-webkit-text-fill-color:#15803d">'+P+'</div></div>'
+    +'<div class="sum-card"><div class="sum-label">Absent</div><div style="font-size:24px;font-weight:500;color:#dc2626;-webkit-text-fill-color:#dc2626">'+A+'</div></div>'
+    +'<div class="sum-card"><div class="sum-label">Leave</div><div style="font-size:24px;font-weight:500;color:#ca8a04;-webkit-text-fill-color:#ca8a04">'+L+'</div></div></div>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:14px;justify-content:center">'+chips+'</div>'
+    +'<button class="save-btn" onclick="saveAttendance()">Save record</button>'
+    +'<button class="restart-btn" onclick="startSession()">Retake</button>'
+    +'</div></div>';
+}
+
+function historyHtml(){
+  if(S.editingRecordIndex!==null) return editRecordHtml();
+  if(!S.records.length) return '<div class="panel"><div class="empty">No records yet.<br>Take attendance first.</div></div>';
+  var grouped={},order=[];
+  var sorted=S.records.slice().sort(function(a,b){return b.ts-a.ts});
+  var indexMap={};
+  for(var i=0;i<sorted.length;i++){
+    var r=sorted[i];
+    var origIdx=S.records.indexOf(r);
+    var my=monthYear(r.ts);
+    if(!grouped[my]){grouped[my]=[];order.push(my)}
+    grouped[my].push({r:r,idx:origIdx});
+  }
+  var h='<div class="panel" style="padding-bottom:6px">'
+    +'<div class="panel-title">History<div class="divider"></div></div>'
+    +'<div style="font-size:11px;color:#888;margin-bottom:10px">Tap any session to edit it</div>';
+  for(var j=0;j<order.length;j++){
+    var my=order[j],recs=grouped[my];
+    h+='<div class="month-hdr">'+my+'</div>';
+    for(var k=0;k<recs.length;k++){
+      var item=recs[k],rv=Object.values(item.r.data);
+      var rP=rv.filter(function(v){return v==='P'}).length;
+      var rA=rv.filter(function(v){return v==='A'}).length;
+      var rL=rv.filter(function(v){return v==='L'}).length;
+      h+='<div class="hist-row" onclick="openEdit('+item.idx+')">'
+        +'<div><div style="font-size:12px;color:#0a4a2a;font-weight:500">'+shortDate(item.r.ts)+'</div>'
+        +'<div style="font-size:10px;color:#888;margin-top:2px">tap to edit</div></div>'
+        +'<div style="display:flex;gap:4px;align-items:center">'
+        +'<span class="bdg-p">'+rP+' P</span><span class="bdg-a">'+rA+' A</span>'+(rL?'<span class="bdg-l">'+rL+' L</span>':'')
+        +'<span style="font-size:14px;color:#b8962e;margin-left:2px;-webkit-text-fill-color:#b8962e">›</span>'
+        +'</div></div>';
+    }
+  }
+  h+='</div>';
+  if(S.students.length){
+    h+='<div class="panel" style="margin-top:0"><div class="panel-title">Per-student summary<div class="divider"></div></div>';
+    for(var m=0;m<S.students.length;m++){
+      var st=S.students[m];
+      var total=0,present=0;
+      for(var ri=0;ri<S.records.length;ri++){if(S.records[ri].data[st.id]&&S.records[ri].data[st.id]!=='L')total++;if(S.records[ri].data[st.id]==='P')present++}
+      var pct=total?Math.round((present/total)*100):0;
+      var col=pct>=75?'#15803d':pct>=50?'#b8962e':'#dc2626';
+      h+='<div class="srow"><div class="av">'+ini(st.name)+'</div>'
+        +'<div style="flex:1;min-width:0"><div class="sname">'+escH(st.name)+'</div>'
+        +'<div style="font-size:10px;color:#666">'+present+'/'+total+' present</div></div>'
+        +'<div style="font-size:13px;font-weight:500;color:'+col+';-webkit-text-fill-color:'+col+'">'+pct+'%</div></div>';
+    }
+    h+='</div>';
+  }
+  return h;
+}
+
+function editRecordHtml(){
+  var idx=S.editingRecordIndex,rec=S.records[idx];
+  if(!rec) return historyHtml();
+  var h='<div class="panel slide-in">'
+    +'<div class="edit-header">'
+    +'<button class="btn-back" onclick="closeEdit()">← Back</button>'
+    +'<div style="flex:1">'
+    +'<div style="font-size:12px;font-weight:500;color:#0a4a2a">Editing session</div>'
+    +'<div style="font-size:10px;color:#888">'+shortDate(rec.ts)+'</div>'
+    +'</div></div>';
+  for(var i=0;i<S.students.length;i++){
+    var s=S.students[i];
+    var cur=S.editData[s.id]||rec.data[s.id]||'';
+    h+='<div class="edit-row">'
+      +'<div class="av">'+ini(s.name)+'</div>'
+      +'<div style="flex:1;min-width:0"><div class="sname">'+escH(s.name)+'</div></div>'
+      +'<div class="toggle-wrap">'
+      +'<button class="tog '+(cur==='P'?'p-on':'p-off')+'" onclick="toggleEdit(\''+s.id+'\',\'P\')">P</button>'
+      +'<button class="tog '+(cur==='A'?'a-on':'a-off')+'" onclick="toggleEdit(\''+s.id+'\',\'A\')">A</button>'
+      +'<button class="tog '+(cur==='L'?'l-on':'l-off')+'" onclick="toggleEdit(\''+s.id+'\',\'L\')">L</button>'
+      +'</div></div>';
+  }
+  h+='<button class="save-edit-btn" onclick="saveEdit()">Save changes</button>'
+    +'<button class="del-btn" onclick="deleteRecord('+idx+')">Delete this record</button>'
+    +'<div class="edit-hint">Changes are saved to this date\'s record only</div>'
+    +'</div>';
+  return h;
+}
+
+function phonesHtml(){
+  if(!S.students.length) return '<div class="panel"><div class="empty">No students yet.</div></div>';
+  var h='<div class="panel"><div class="panel-title">Phone numbers<div class="divider"></div></div>';
+  for(var i=0;i<S.students.length;i++){
+    var s=S.students[i];
+    if(S.editingPhoneId===s.id){
+      h+='<div class="phone-row"><div class="av">'+ini(s.name)+'</div>'
+        +'<div style="flex:1;min-width:0"><div class="sname">'+escH(s.name)+'</div>'
+        +'<input class="phone-edit-inp" id="pedit-'+s.id+'" type="tel" value="'+escH(s.phone||'')+'" placeholder="e.g. 0300-1234567"/>'
+        +'</div>'
+        +'<button class="btn-save-phone" onclick="savePhone(\''+s.id+'\')">Save</button>'
+        +'<button class="btn-cancel-phone" onclick="cancelPhone()">✕</button>'
+        +'</div>';
+    } else {
+      h+='<div class="phone-row"><div class="av">'+ini(s.name)+'</div>'
+        +'<div style="flex:1;min-width:0"><div class="sname">'+escH(s.name)+'</div>'
+        +(s.phone?'<div class="sphone" style="color:#444;-webkit-text-fill-color:#444">'+escH(s.phone)+'</div>':'<div class="no-phone">No number</div>')
+        +'</div>'
+        +'<button class="btn-edit-phone" onclick="editPhone(\''+s.id+'\')">Edit</button>'
+        +'</div>';
+    }
+  }
+  return h+'</div>';
+}
+
+function advLeaveHtml(){
+  if(!S.students.length) return '<div class="panel"><div class="empty">Add students first.</div></div>';
+  // build list of upcoming/future advance leaves
+  var today=new Date(); today.setHours(0,0,0,0);
+  var h='<div class="panel"><div class="panel-title">Advance Leave<div class="divider"></div></div>'
+    +'<div style="font-size:11px;color:#888;margin-bottom:12px">Mark a student on leave for a future date. It will auto-apply when that date\'s attendance is saved.</div>'
+    +'<label class="field-label">Student</label>'
+    +'<select class="inp" id="al-student">';
+  for(var i=0;i<S.students.length;i++){h+='<option value="'+S.students[i].id+'">'+escH(S.students[i].name)+'</option>'}
+  h+='</select>'
+    +'<label class="field-label">Date</label>'
+    +'<input class="inp" type="date" id="al-date" min="'+new Date(today.getTime()+86400000).toISOString().slice(0,10)+'"/>'
+    +'<button class="btn-primary" onclick="addAdvLeave()" style="margin-bottom:14px">Schedule Leave</button>';
+  // show existing advance leaves
+  var entries=S.advLeaves||[];
+  // only show future ones (not yet consumed)
+  var future=entries.filter(function(e){return new Date(e.date)>=today});
+  if(future.length){
+    h+='<div class="panel-title" style="margin-top:2px">Scheduled<div class="divider"></div></div>';
+    var sorted2=future.slice().sort(function(a,b){return a.date<b.date?-1:1});
+    for(var j=0;j<sorted2.length;j++){
+      var e=sorted2[j];
+      var sname='';for(var k=0;k<S.students.length;k++){if(S.students[k].id===e.sid){sname=S.students[k].name;break}}
+      if(!sname)continue;
+      var dDisp=new Date(e.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+      h+='<div class="adv-leave-row"><div class="av">'+ini(sname)+'</div>'
+        +'<div style="flex:1;min-width:0"><div class="sname">'+escH(sname)+'</div>'
+        +'<div class="sphone">'+dDisp+'</div></div>'
+        +'<span class="adv-chip">Leave</span>'
+        +'<button class="adv-remove" onclick="removeAdvLeave(\''+e.id+'\')">✕</button>'
+        +'</div>';
+    }
+  } else {
+    h+='<div style="font-size:11px;color:#aaa;text-align:center;padding:6px 0">No advance leaves scheduled.</div>';
+  }
+  return h+'</div>';
+}
+
+function databaseHtml(){
+  if(!S.students.length||!S.records.length) return '<div class="panel"><div class="empty">No data yet.</div></div>';
+  // group records by month
+  var grouped={},order=[];
+  var sorted=S.records.slice().sort(function(a,b){return a.ts-b.ts});
+  for(var i=0;i<sorted.length;i++){
+    var my=monthYear(sorted[i].ts);
+    if(!grouped[my]){grouped[my]=[];order.push(my)}
+    grouped[my].push(sorted[i]);
+  }
+  var h='<div class="panel" style="padding-bottom:8px"><div class="panel-title">Database<div class="divider"></div></div>'
+    +'<button class="btn-primary" onclick="exportSnapshot()" style="margin-bottom:14px">⬇ Export &amp; Share</button>';
+  for(var m=0;m<order.length;m++){
+    var my2=order[m],recs=grouped[my2];
+    h+='<div class="db-month-hdr">'+my2+'</div><div class="db-scroll"><table class="db-table"><thead><tr><th class="name-col">Student</th>';
+    for(var d=0;d<recs.length;d++){
+      var dayLabel=new Date(recs[d].ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+      h+='<th>'+dayLabel+'</th>';
+    }
+    h+='</tr></thead><tbody>';
+    for(var si=0;si<S.students.length;si++){
+      var st=S.students[si];
+      h+='<tr><td class="name-col">'+escH(st.name)+'</td>';
+      for(var di=0;di<recs.length;di++){
+        var val=recs[di].data[st.id];
+        if(val==='P')h+='<td class="cell-p">P</td>';
+        else if(val==='A')h+='<td class="cell-a">A</td>';
+        else if(val==='L')h+='<td class="cell-l">L</td>';
+        else h+='<td class="cell-blank">–</td>';
+      }
+      h+='</tr>';
+    }
+    h+='</tbody></table></div>';
+  }
+  return h+'</div>';
+}
+
+function render(){
+  var views={add:addHtml,remove:removeHtml,attend:attendHtml,history:historyHtml,phones:phonesHtml,advleave:advLeaveHtml,database:databaseHtml};
+  root.innerHTML=heroHtml()+navHtml()+(views[S.view]||addHtml)();
+}
+
+window.setView=function(v){S.editingRecordIndex=null;S.editData={};S.editingPhoneId=null;S.view=v;render()};
+window.addStudent=function(){
+  var ne=document.getElementById('inp-name'),pe=document.getElementById('inp-phone');
+  if(!ne){toast('Error: inputs not found');return}
+  var name=ne.value.trim(),phone=pe?pe.value.trim():'';
+  if(!name){toast('Please enter a name');return}
+  for(var i=0;i<S.students.length;i++){if(S.students[i].name.toLowerCase()===name.toLowerCase()){toast('Student already exists');return}}
+  S.students.push({id:String(Date.now()),name:name,phone:phone});
+  persist();render();toast(name+' added!');
+};
+window.removeStudent=function(id){
+  var s=null;
+  for(var i=0;i<S.students.length;i++){if(S.students[i].id===id){s=S.students[i];break}}
+  S.students=S.students.filter(function(x){return x.id!==id});
+  delete S.session[id];persist();render();if(s)toast(s.name+' removed');
+};
+window.startSession=function(){S.session={};S.fcIndex=0;S.fcStarted=true;S.fcDone=false;render()};
+window.markFC=function(val){
+  S.session[S.students[S.fcIndex].id]=val;
+  if(S.fcIndex<S.students.length-1){S.fcIndex++;render()}else{S.fcDone=true;render()}
+};
+window.undoFC=function(){if(!S.fcIndex)return;S.fcIndex--;delete S.session[S.students[S.fcIndex].id];render()};
+window.saveAttendance=function(){
+  var todayStr=new Date().toISOString().slice(0,10);
+  var sessionCopy=JSON.parse(JSON.stringify(S.session));
+  // auto-apply advance leaves for today that weren't manually marked
+  for(var i=0;i<S.advLeaves.length;i++){
+    var al=S.advLeaves[i];
+    if(al.date===todayStr && !sessionCopy[al.sid]){
+      sessionCopy[al.sid]='L';
+    }
+  }
+  // remove consumed advance leaves for today
+  S.advLeaves=S.advLeaves.filter(function(al){return al.date!==todayStr});
+  S.records.push({date:fullDate(),ts:Date.now(),data:sessionCopy});
+  S.fcStarted=false;S.fcDone=false;S.session={};persist();render();toast('Attendance saved!');
+};
+window.openEdit=function(idx){
+  S.editingRecordIndex=idx;
+  S.editData=JSON.parse(JSON.stringify(S.records[idx].data));
+  render();
+};
+window.closeEdit=function(){S.editingRecordIndex=null;S.editData={};render()};
+window.toggleEdit=function(sid,val){
+  S.editData[sid]=(S.editData[sid]===val?'':val);
+  render();
+};
+window.saveEdit=function(){
+  var idx=S.editingRecordIndex;
+  if(idx===null)return;
+  S.records[idx].data=JSON.parse(JSON.stringify(S.editData));
+  persist();S.editingRecordIndex=null;S.editData={};render();toast('Record updated!');
+};
+window.deleteRecord=function(idx){
+  S.records.splice(idx,1);
+  persist();S.editingRecordIndex=null;S.editData={};render();toast('Record deleted');
+};
+
+// ── Phone editing ──────────────────────────────────────
+window.editPhone=function(sid){
+  S.editingPhoneId=sid;render();
+  // focus the input after render
+  setTimeout(function(){var el=document.getElementById('pedit-'+sid);if(el)el.focus()},50);
+};
+window.cancelPhone=function(){S.editingPhoneId=null;render()};
+window.savePhone=function(sid){
+  var el=document.getElementById('pedit-'+sid);
+  if(!el)return;
+  var val=el.value.trim();
+  for(var i=0;i<S.students.length;i++){
+    if(S.students[i].id===sid){S.students[i].phone=val;break}
+  }
+  S.editingPhoneId=null;persist();render();toast('Phone number updated!');
+};
+
+// ── Advance leave ──────────────────────────────────────
+window.addAdvLeave=function(){
+  var sidEl=document.getElementById('al-student');
+  var dateEl=document.getElementById('al-date');
+  if(!sidEl||!dateEl){toast('Error');return}
+  var sid=sidEl.value,date=dateEl.value;
+  if(!date){toast('Please pick a date');return}
+  var today=new Date();today.setHours(0,0,0,0);
+  var chosen=new Date(date+'T00:00:00');
+  if(chosen<=today){toast('Date must be in the future');return}
+  // prevent duplicate
+  for(var i=0;i<S.advLeaves.length;i++){
+    if(S.advLeaves[i].sid===sid&&S.advLeaves[i].date===date){toast('Already scheduled');return}
+  }
+  S.advLeaves.push({id:String(Date.now()),sid:sid,date:date});
+  persist();render();
+  var sname='';for(var j=0;j<S.students.length;j++){if(S.students[j].id===sid){sname=S.students[j].name;break}}
+  toast(sname+' leave scheduled!');
+};
+window.removeAdvLeave=function(id){
+  S.advLeaves=S.advLeaves.filter(function(e){return e.id!==id});
+  persist();render();toast('Leave removed');
+};
+
+window.exportSnapshot=function(){
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',window.location.href,false);
+  try{xhr.send()}catch(e){}
+  var src=(xhr.status===200)?xhr.responseText:document.documentElement.outerHTML;
+
+  var injection='<script id="snapshot-data">'
+    +'(function(){'
+    +'var d='+JSON.stringify({students:S.students,records:S.records,advLeaves:S.advLeaves})+';'
+    +'try{localStorage.setItem("att5_students",JSON.stringify(d.students));}catch(e){}'
+    +'try{localStorage.setItem("att5_records",JSON.stringify(d.records));}catch(e){}'
+    +'try{localStorage.setItem("att5_advleaves",JSON.stringify(d.advLeaves));}catch(e){}'
+    +'})();'
+    +'<\/script>';
+
+  var clean=src.replace(/<script id="snapshot-data">[\s\S]*?<\/script>/,'');
+  var out=clean.indexOf('</body>')!==-1
+    ?clean.replace('</body>',injection+'</body>')
+    :clean+injection;
+
+  var blob=new Blob([out],{type:'text/html'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='attendance_'+new Date().toISOString().slice(0,10)+'.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url)},2000);
+  toast('Snapshot downloaded!');
+};
+
+render();
+</script>
